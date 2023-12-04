@@ -5,7 +5,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 
 from posts.models import BlogPost
 
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 class BlogHome(ListView):
     model = BlogPost
@@ -18,10 +19,12 @@ class BlogHome(ListView):
 
         return queryset.filter(published=True)
 
+@method_decorator(login_required, name='dispatch')
 class BlogPostCreate(CreateView):
     model = BlogPost
     template_name = "posts/blogpost_create.html"
     fields = ['title', 'content', ]
+
 
 class BlogPostUpdate(UpdateView):
     model = BlogPost
